@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM COMPROMISED</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+        }
+        
+        .glitch-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .glitch-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='black'/%3E%3C/svg%3E");
+            opacity: 0.8;
+            z-index: -2;
+        }
+        
+        .noise {
+            position: fixed;
+            top: -500px;
+            left: -500px;
+            right: -500px;
+            bottom: -500px;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.05;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .logo {
+            width: 200px;
+            height: 200px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
+        }
+        
+        h1 {
+            font-size: 3.5em;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1:before, h1:after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        h1:before {
+            left: 2px;
+            text-shadow: -1px 0 red;
+            animation: glitch-1 2s infinite linear alternate-reverse;
+        }
+        
+        h1:after {
+            left: -2px;
+            text-shadow: 1px 0 blue;
+            animation: glitch-2 3s infinite linear alternate-reverse;
+        }
+        
+        @keyframes glitch-1 {
+            0%, 15%, 25%, 35%, 55%, 65%, 75%, 95% { 
+                clip-path: inset(70% 0 10% 0);
+                transform: translate(-1px, -1px);
+            }
+            10%, 20%, 30%, 50%, 60%, 70%, 90% { 
+                clip-path: inset(10% 0 60% 0);
+                transform: translate(1px, 1px);
+            }
+            100% { 
+                clip-path: inset(50% 0 30% 0);
+                transform: translate(0, 0);
+            }
+        }
+        
+        @keyframes glitch-2 {
+            0%, 15%, 25%, 35%, 55%, 65%, 75%, 95% { 
+                clip-path: inset(30% 0 60% 0);
+                transform: translate(1px, -1px);
+            }
+            10%, 20%, 30%, 50%, 60%, 70%, 90% { 
+                clip-path: inset(60% 0 10% 0);
+                transform: translate(-1px, 1px);
+            }
+            100% { 
+                clip-path: inset(40% 0 50% 0);
+                transform: translate(0, 0);
+            }
+        }
+        
+        .message {
+            max-width: 800px;
+            margin: 20px;
+            font-size: 1.2em;
+            line-height: 1.4;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-left: 4px solid #ff0000;
+            animation: flicker 5s infinite;
+        }
+        
+        @keyframes flicker {
+            0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+                opacity: 1;
+            }
+            20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+                opacity: 0.5;
+            }
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 0.15em solid #fff;
+            animation: typing 8s steps(100) 1s 1 normal both, blink-caret 1s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #fff }
+        }
+        
+        .terminal {
+            width: 80%;
+            max-width: 800px;
+            height: 300px;
+            background-color: rgba(16, 16, 16, 0.9);
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 20px;
+            overflow: hidden;
+            font-family: monospace;
+            font-size: 14px;
+            position: relative;
+        }
+        
+        .terminal-header {
+            background-color: #333;
+            padding: 5px 10px;
+            margin: -10px -10px 10px -10px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .terminal-title {
+            color: #ddd;
+        }
+        
+        .terminal-buttons {
+            display: flex;
+        }
+        
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-left: 6px;
+        }
+        
+        .button-red { background-color: #ff5f56; }
+        .button-yellow { background-color: #ffbd2e; }
+        .button-green { background-color: #27c93f; }
+        
+        .terminal-content {
+            height: calc(100% - 30px);
+            overflow-y: auto;
+            color: #00ff00;
+        }
+        
+        .terminal-line {
+            margin: 5px 0;
+            line-height: 1.2;
+        }
+        
+        .terminal-prompt::before {
+            content: "root@anonymous:~# ";
+            color: #ff0000;
+        }
+        
+        .terminal-response {
+            color: #ddd;
+            padding-left: 20px;
+        }
+        
+        .blinking-cursor {
+            animation: blink 1s step-end infinite;
+        }
+        
+        @keyframes blink {
+            from, to { color: transparent }
+            50% { color: #00ff00 }
+        }
+        
+        .vhs-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0) 0%,
+                rgba(0, 0, 0, 0) 99%,
+                rgba(0, 0, 0, 0.3) 99%,
+                rgba(0, 0, 0, 0.3) 100%
+            );
+            background-size: 100% 3px;
+            z-index: 10;
+        }
+        
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            z-index: 8;
+            background: linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.1) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            opacity: 0.1;
+            pointer-events: none;
+            animation: scanline 6s linear infinite;
+        }
+        
+        @keyframes scanline {
+            0% { top: -100px; }
+            100% { top: 100%; }
+        }
+        
+        .crt-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(0, 0, 0, 0) 0%,
+                rgba(0, 0, 0, 0.3) 90%,
+                rgba(0, 0, 0, 0.7) 100%
+            );
+        }
+        
+        .warning-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-5deg);
+            font-size: 10vw;
+            font-weight: bold;
+            color: rgba(255, 0, 0, 0.2);
+            text-transform: uppercase;
+            pointer-events: none;
+            z-index: 7;
+            white-space: nowrap;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="glitch-bg"></div>
+    <div class="noise"></div>
+    <div class="crt-effect"></div>
+    <div class="scanline"></div>
+    <div class="vhs-effect"></div>
+    <div class="warning-overlay">SYSTEM COMPROMISED</div>
+    
+    <div class="glitch-container">
+        <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path fill="#fff" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 72c49.7 0 89.5 30.8 103.4 74.4 1.1 3.5-1.7 6.8-5.3 7.2l-76.5 8.4c-3.7.4-6.9-2.4-7.4-6.1-2.8-19.9-16.9-34.2-33-33.2-17.3 1.1-30.7 16.5-30.7 33.8 0 19.1 15.5 34.6 34.6 34.6h51.7c3.9 0 7 3.1 7 7v40c0 3.9-3.1 7-7 7h-51.7c-19.1 0-34.6 15.5-34.6 34.6 0 17.3 13.4 32.8 30.7 33.8 16.1 1 30.2-13.3 33-33.2.5-3.7 3.7-6.5 7.4-6.1l76.5 8.4c3.6.4 6.4 3.7 5.3 7.2-14 43.6-53.7 74.4-103.4 74.4-58.3 0-105.6-47.3-105.6-105.6 0-30.8 13.3-58.6 34.5-77.8-3.2-3.4-6.3-7.3-6.3-12.5 0-5.8 4.2-10.6 9.4-11.8 5.1-33.6 33.8-59.4 68-59.4z"/>
+        </svg>
+        
+        <h1 data-text="SYSTEM COMPROMISED">SYSTEM COMPROMISED</h1>
+        
+        <div class="message">
+            <p class="typewriter">We are Anonymous. We are Legion. We do not forgive. We do not forget. Expect us.</p>
+        </div>
+        
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-title">root@anonymous:~</div>
+                <div class="terminal-buttons">
+                    <div class="terminal-button button-red"></div>
+                    <div class="terminal-button button-yellow"></div>
+                    <div class="terminal-button button-green"></div>
+                </div>
+            </div>
+            <div class="terminal-content" id="terminal-content">
+                <div class="terminal-line terminal-prompt">./initiate_hack.sh</div>
+                <div class="terminal-line terminal-response">Establishing secure connection...</div>
+                <div class="terminal-line terminal-response">Bypassing firewall... [success]</div>
+                <div class="terminal-line terminal-response">Disabling security protocols... [success]</div>
+                <div class="terminal-line terminal-prompt">cat /etc/shadow</div>
+                <div class="terminal-line terminal-response">root:$6$xxxxxxxxxxxxxxxx:18659:0:99999:7:::</div>
+                <div class="terminal-line terminal-response">daemon:*:18659:0:99999:7:::</div>
+                <div class="terminal-line terminal-response">bin:*:18659:0:99999:7:::</div>
+                <div class="terminal-line terminal-prompt">./decrypt_passwd.sh</div>
+                <div class="terminal-line terminal-response">Decryption in progress...</div>
+                <div class="terminal-line terminal-response">Password hash cracked: "hunter2"</div>
+                <div class="terminal-line terminal-prompt">sudo -i</div>
+                <div class="terminal-line terminal-response">[sudo] password for anonymous:</div>
+                <div class="terminal-line terminal-response">********</div>
+                <div class="terminal-line terminal-response">Welcome to the system, root user!</div>
+                <div class="terminal-line terminal-prompt">find / -name "*.important" -type f</div>
+                <div class="terminal-line terminal-response">Searching system files...</div>
+                <div class="terminal-line terminal-response">/home/user/Documents/financial_records.important</div>
+                <div class="terminal-line terminal-response">/home/user/Documents/passwords.important</div>
+                <div class="terminal-line terminal-response">/var/www/html/backup/database_credentials.important</div>
+                <div class="terminal-line terminal-prompt">./exfiltrate_data.sh --silent</div>
+                <div class="terminal-line terminal-response">Uploading data to remote server...</div>
+                <div class="terminal-line terminal-response">Progress: [####################] 100%</div>
+                <div class="terminal-line terminal-response">Data exfiltration complete.</div>
+                <div class="terminal-line terminal-prompt">rm -rf /*</div>
+                <div class="terminal-line terminal-response">Are you sure you want to delete all system files? (y/n)</div>
+                <div class="terminal-line terminal-response">y</div>
+                <div class="terminal-line terminal-response">System files deletion in progress...</div>
+                <div class="terminal-line terminal-response">Progress: [####################] 100%</div>
+                <div class="terminal-line terminal-response">System compromised. Goodbye.</div>
+                <div class="terminal-line terminal-prompt"><span class="blinking-cursor">█</span></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Simulate typing effect in terminal
+        const terminalContent = document.getElementById('terminal-content');
+        const terminalLines = terminalContent.querySelectorAll('.terminal-line');
+        
+        // Hide all lines initially
+        terminalLines.forEach((line, index) => {
+            if (index > 0) {
+                line.style.display = 'none';
+            }
+        });
+        
+        // Show lines one by one
+        let lineIndex = 1;
+        const showNextLine = () => {
+            if (lineIndex < terminalLines.length) {
+                terminalLines[lineIndex].style.display = 'block';
+                lineIndex++;
+                
+                // Scroll to bottom
+                terminalContent.scrollTop = terminalContent.scrollHeight;
+                
+                // Random delay between 100ms and 1000ms
+                const delay = Math.random() * 900 + 100;
+                setTimeout(showNextLine, delay);
+            }
+        };
+        
+        // Start showing lines
+        setTimeout(showNextLine, 1000);
+        
+        // Add random noise and glitch effects
+        setInterval(() => {
+            if (Math.random() < 0.1) {
+                document.body.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+                setTimeout(() => {
+                    document.body.style.filter = 'none';
+                }, 100);
+            }
+        }, 2000);
+    </script>
+</body>
+</html>

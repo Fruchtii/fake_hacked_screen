@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOU HAVE BEEN HACKED</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%230f0' stroke-width='2'%3E%3Cpath d='M12 19l7-7 3 3-7 7-3-3z'/%3E%3Cpath d='M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z'/%3E%3Cpath d='M2 2l7.586 7.586'/%3E%3Ccircle cx='11' cy='11' r='2'/%3E%3C/svg%3E"), auto;
+        }
+        
+        /* Fake webcam overlay */
+        .webcam-hack {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 240px;
+            height: 180px;
+            border: 3px solid #f00;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            z-index: 100;
+        }
+        
+        .webcam-hack::before {
+            content: "WEBCAM ACCESSED";
+            position: absolute;
+            top: 5px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #f00;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .webcam-hack::after {
+            content: "REC ⚫";
+            position: absolute;
+            bottom: 5px;
+            right: 10px;
+            color: #f00;
+            font-size: 14px;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+        
+        .webcam-static {
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.5)),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23111'/%3E%3C/svg%3E");
+            animation: static 0.5s steps(3, end) infinite;
+        }
+        
+        @keyframes static {
+            0% { background-position: 0 0; }
+            100% { background-position: 100% 100%; }
+        }
+        
+        /* Face detection overlay */
+        .face-detection {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: 70%;
+            border: 2px dashed #0f0;
+            animation: scan 3s infinite;
+        }
+        
+        @keyframes scan {
+            0% { border-color: #f00; }
+            50% { border-color: #0f0; }
+            100% { border-color: #f00; }
+        }
+        
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 0, 0.15),
+                rgba(0, 255, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            animation: scrollDown 20s linear infinite;
+        }
+        
+        @keyframes scrollDown {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 1000px; }
+        }
+        
+        /* Matrix code rain */
+        .matrix-code {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .code-column {
+            position: absolute;
+            top: -20px;
+            font-family: monospace;
+            font-size: 14px;
+            color: #0f0;
+            text-shadow: 0 0 5px #0f0;
+            opacity: 0.7;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            white-space: nowrap;
+            animation-name: code-drop;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+        
+        @keyframes code-drop {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 4em;
+            margin-bottom: 0.5em;
+            text-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
+            animation: glitch 1s infinite alternate-reverse;
+        }
+        
+        @keyframes glitch {
+            0% {
+                text-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
+                transform: skewX(0deg);
+            }
+            20% {
+                text-shadow: -3px 0 #ff0000, 3px 0 #00ffff;
+                transform: skewX(4deg);
+            }
+            40% {
+                text-shadow: 3px 0 #ff0000, -3px 0 #00ffff;
+                transform: skewX(-4deg);
+            }
+            60% {
+                text-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
+                transform: skewX(0deg);
+            }
+            80% {
+                text-shadow: 3px 3px #ff0000, -3px -3px #00ffff;
+                transform: skewX(2deg);
+            }
+            100% {
+                text-shadow: -3px -3px #ff0000, 3px 3px #00ffff;
+                transform: skewX(-2deg);
+            }
+        }
+        
+        p {
+            font-size: 1.5em;
+            margin-bottom: 1em;
+            line-height: 1.4;
+        }
+        
+        .counter {
+            font-size: 2em;
+            margin: 1em 0;
+            font-weight: bold;
+        }
+        
+        .hacker-console {
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 1px solid #0f0;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+            height: 200px;
+            overflow: hidden;
+            box-shadow: 0 0 10px #0f0;
+        }
+        
+        .console-line {
+            margin: 5px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            animation: typing 1s steps(30, end);
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        .funny-button {
+            background-color: #0f0;
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.5em;
+            margin: 20px 0;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .funny-button:hover {
+            animation: rainbow-bg 3s linear infinite;
+        }
+        
+        @keyframes rainbow-bg {
+            0% { background-color: red; }
+            14% { background-color: orange; }
+            28% { background-color: yellow; }
+            42% { background-color: green; }
+            57% { background-color: blue; }
+            71% { background-color: indigo; }
+            85% { background-color: violet; }
+            100% { background-color: red; }
+        }
+        
+        .moving-element {
+            position: absolute;
+            font-size: 2em;
+            pointer-events: none;
+            user-select: none;
+            z-index: 100;
+        }
+        
+        .cat-gif {
+            max-width: 300px;
+            margin: 20px auto;
+            border: 3px solid #0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .cat-gif img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .cat-img-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Cat overlay collection */
+        .cat-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Cstyle%3E .cat %7B fill: %230f0; %7D %3C/style%3E%3Cg class='cat'%3E%3Cpath d='M120,80 Q150,50 180,80 L170,100 Q150,90 130,100 Z'/%3E%3Ccircle cx='135' cy='85' r='5'/%3E%3Ccircle cx='165' cy='85' r='5'/%3E%3Cpath d='M150,95 Q145,105 150,110 Q155,105 150,95 Z'/%3E%3Cpath d='M110,70 L130,65 L125,85 Z'/%3E%3Cpath d='M190,70 L170,65 L175,85 Z'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: cover;
+            opacity: 0.5;
+            mix-blend-mode: overlay;
+        }
+        
+        /* Digital distortion effect */
+        .glitch-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(transparent, transparent),
+                        linear-gradient(to right, rgba(255,0,0,0.1), rgba(0,255,0,0.1), rgba(0,0,255,0.1));
+            mix-blend-mode: color;
+            animation: glitch-color 5s infinite linear alternate;
+        }
+        
+        @keyframes glitch-color {
+            0% { opacity: 0.1; }
+            7% { opacity: 0.3; }
+            15% { opacity: 0.1; }
+            24% { opacity: 0.5; }
+            45% { opacity: 0.1; }
+            60% { opacity: 0.3; }
+            67% { opacity: 0.1; }
+            80% { opacity: 0.5; }
+            100% { opacity: 0.1; }
+        }
+        
+        /* Scanning effect */
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: rgba(0, 255, 0, 0.5);
+            box-shadow: 0 0 5px #0f0;
+            animation: scan-effect 3s linear infinite;
+            z-index: 2;
+        }
+        
+        @keyframes scan-effect {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+        
+        .error-message {
+            background-color: #f00;
+            color: white;
+            padding: 10px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            animation: shake 0.5s linear infinite;
+            display: none;
+        }
+        
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(0); }
+            75% { transform: translateX(5px); }
+            100% { transform: translateX(0); }
+        }
+        
+        .popup {
+            position: fixed;
+            background-color: #000;
+            border: 2px solid #0f0;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #0f0;
+            z-index: 1000;
+            max-width: 300px;
+            text-align: center;
+            display: none;
+        }
+        
+        .popup h3 {
+            margin-top: 0;
+        }
+        
+        .popup-button {
+            background-color: #0f0;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+        
+        /* Fancy progress bars */
+        .progress-container {
+            margin: 30px 0;
+            border: 1px solid #0f0;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background-color: #111;
+            border: 1px solid #0f0;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 15px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #0f0, #0ff);
+            width: 0%;
+            animation: progress-animation 15s ease-in-out;
+            animation-fill-mode: forwards;
+            position: relative;
+        }
+        
+        .progress-fill::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(
+                    90deg, 
+                    rgba(255,255,255,0) 0%, 
+                    rgba(255,255,255,0.1) 50%, 
+                    rgba(255,255,255,0) 100%
+                );
+            animation: progress-shine 2s infinite;
+        }
+        
+        @keyframes progress-animation {
+            0% { width: 0%; }
+            20% { width: 20%; }
+            40% { width: 40%; }
+            50% { width: 45%; }
+            60% { width: 65%; }
+            80% { width: 80%; }
+            90% { width: 95%; }
+            100% { width: 100%; }
+        }
+        
+        @keyframes progress-shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* Flying emojis */
+        .flying-emoji {
+            position: fixed;
+            font-size: 20px;
+            animation: fly-emoji 10s linear infinite;
+            z-index: 5;
+            pointer-events: none;
+        }
+        
+        @keyframes fly-emoji {
+            0% {
+                transform: translate(-100px, random(100vh));
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(100vw + 100px), random(100vh));
+                opacity: 0;
+            }
+        }
+        
+        /* Dancing skull */
+        .dancing-skull {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 40px;
+            animation: dance 1s infinite alternate;
+            text-shadow: 0 0 10px red;
+            z-index: 10;
+        }
+        
+        @keyframes dance {
+            0% { transform: rotate(-10deg) scale(1); }
+            100% { transform: rotate(10deg) scale(1.1); }
+        }
+        
+        /* IP address display */
+        .fake-ip {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 1px solid #f00;
+            padding: 10px;
+            font-size: 14px;
+            color: #f00;
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-bg"></div>
+    <div class="matrix-code" id="matrix-code"></div>
+    
+    <div class="fake-ip">IP ADDRESS: 127.0.0.<span id="random-ip">1</span></div>
+    
+    <div class="webcam-hack">
+        <div class="webcam-static"></div>
+        <div class="face-detection"></div>
+    </div>
+    
+    <div class="dancing-skull">💀</div>
+    
+    <div class="container">
+        <h1 id="main-title">YOU HAVE BEEN HACKED!</h1>
+        
+        <p>Your computer has been compromised by the world's most dangerous hacker group:</p>
+        <p style="font-size: 2.5em;">⚠️ THE FLUFFY KITTENS ⚠️</p>
+        
+        <div class="cat-gif">
+            <div class="cat-img-container">
+                <img src="/api/placeholder/300/200" alt="Hacker cat">
+                <div class="cat-overlay"></div>
+                <div class="glitch-effect"></div>
+                <div class="scan-line"></div>
+            </div>
+        </div>
+        
+        <p>We have taken control of your system and replaced all your important files with cat memes!</p>
+        
+        <div class="counter">
+            Time remaining to pay ransom: <span id="countdown">10:00</span>
+        </div>
+        
+        <div class="hacker-console" id="console">
+            <div class="console-line">$ initiating_system_takeover.exe</div>
+            <div class="console-line">$ accessing_mainframe...</div>
+            <div class="console-line">$ bypassing_firewall_with_catnip.dll</div>
+            <div class="console-line">$ replacing_documents_with_cat_pictures.exe</div>
+            <div class="console-line">$ installing_purrware_v3.1.4</div>
+            <div class="console-line">$ meow_meow_meow_meow_meow.bat</div>
+            <div class="console-line">$ hack_complete! 😺</div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-label">
+                <span>Installing Meowlware:</span>
+                <span id="progress-percentage">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            
+            <div class="progress-label">
+                <span>Encrypting Files:</span>
+                <span id="files-percentage">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="files-fill"></div>
+            </div>
+            
+            <div class="progress-label">
+                <span>Stealing Tuna:</span>
+                <span id="tuna-percentage">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="tuna-fill"></div>
+            </div>
+        </div>
+        
+        <p>To regain access to your files, you must pay a ransom of:</p>
+        <p style="font-size: 2.5em;">5 CANS OF TUNA 🐟 + 10 CAT TREATS 🍪</p>
+        
+        <button class="funny-button" id="pay-button">PAY RANSOM NOW</button>
+        <button class="funny-button" id="refuse-button">REFUSE TO PAY</button>
+        <button class="funny-button" id="negotiate-button">ATTEMPT TO NEGOTIATE</button>
+        
+        <div class="error-message" id="error-message">
+            ERROR! Your mouse is infected with a digital hairball!
+        </div>
+    </div>
+    
+    <div class="popup" id="popup1" style="top: 30%; left: 20%;">
+        <h3>WARNING!</h3>
+        <p>Your system has detected 387 viruses all named "Mr. Whiskers"!</p>
+        <button class="popup-button">OK</button>
+    </div>
+    
+    <div class="popup" id="popup2" style="top: 20%; left: 60%;">
+        <h3>SYSTEM ERROR!</h3>
+        <p>Catastrophic failure! Too much cat hair in the CPU!</p>
+        <button class="popup-button">CLEAN NOW</button>
+    </div>
+    
+    <div class="popup" id="popup3" style="top: 60%; left: 40%;">
+        <h3>ATTENTION!</h3>
+        <p>Your computer needs more treats to continue operating!</p>
+        <button class="popup-button">FEED COMPUTER</button>
+    </div>
+    
+    <script>
+        // Add mousemove effect
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+            
+            // Random chance to show error message
+            if (Math.random() < 0.01) {
+                document.getElementById('error-message').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('error-message').style.display = 'none';
+                }, 2000);
+            }
+        });
+        
+        // Countdown timer
+        let timeLeft = 600; // 10 minutes in seconds
+        const countdownDisplay = document.getElementById('countdown');
+        
+        const updateCountdown = () => {
+            const minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            countdownDisplay.textContent = `${minutes}:${seconds}`;
+            
+            if (timeLeft > 0) {
+                timeLeft--;
+            } else {
+                clearInterval(timerInterval);
+                document.getElementById('main-title').textContent = "TIME'S UP! MEOW!";
+            }
+        };
+        
+        const timerInterval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+        
+        // Pay ransom button
+        document.getElementById('pay-button').addEventListener('click', () => {
+            alert("Thank you for your cooperation! Your files have been restored (and filled with even more cat memes)! MEOW!");
+            document.getElementById('main-title').textContent = "HACK COMPLETE! MEOW!";
+            clearInterval(timerInterval);
+        });
+        
+        // Refuse button - show popups
+        document.getElementById('refuse-button').addEventListener('click', () => {
+            document.querySelectorAll('.popup').forEach(popup => {
+                popup.style.display = 'block';
+            });
+            
+            // Make the title glitch more intensely
+            document.getElementById('main-title').style.animation = 'glitch 0.5s infinite alternate-reverse';
+        });
+        
+        // Close popups when clicked
+        document.querySelectorAll('.popup-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.target.closest('.popup').style.display = 'none';
+                
+                // 50% chance to open another random popup
+                if (Math.random() < 0.5) {
+                    const popups = document.querySelectorAll('.popup');
+                    const randomPopup = popups[Math.floor(Math.random() * popups.length)];
+                    randomPopup.style.top = Math.random() * 70 + 10 + '%';
+                    randomPopup.style.left = Math.random() * 70 + 10 + '%';
+                    randomPopup.style.display = 'block';
+                }
+            });
+        });
+        
+        // Add more console messages over time
+        const console = document.getElementById('console');
+        const funnyMessages = [
+            "$ downloading_cat_videos.exe",
+            "$ replacing_screensaver_with_yarn_ball.bat",
+            "$ installing_keyboard_nap_detector.dll",
+            "$ uploading_hairballs_to_cloud.png",
+            "$ encrypting_files_with_paw_prints.jpg",
+            "$ converting_all_fonts_to_comic_sans.ttf",
+            "$ changing_all_passwords_to_'meow123'.pwd",
+            "$ turning_off_mouse_detection_for_obvious_reasons.exe"
+        ];
+        
+        setInterval(() => {
+            if (funnyMessages.length > 0) {
+                const newLine = document.createElement('div');
+                newLine.className = 'console-line';
+                newLine.textContent = funnyMessages.shift();
+                console.appendChild(newLine);
+                
+                // Remove first line if too many
+                if (console.children.length > 12) {
+                    console.removeChild(console.children[0]);
+                }
+            }
+        }, 3000);
+    </script>
+</body>
+</html>

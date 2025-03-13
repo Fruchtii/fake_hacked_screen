@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA SYSTEM BREACH</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0a0a2a;
+            color: #00ffff;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            cursor: crosshair;
+        }
+        
+        /* NASA-style header */
+        .nasa-header {
+            background-color: #000;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 2px solid #ff0000;
+            position: relative;
+            z-index: 100;
+        }
+        
+        .nasa-logo {
+            width: 100px;
+            height: auto;
+            margin-right: 20px;
+            vertical-align: middle;
+        }
+        
+        .nasa-title {
+            display: inline-block;
+            color: white;
+            font-size: 28px;
+            vertical-align: middle;
+            font-weight: bold;
+            letter-spacing: 3px;
+        }
+        
+        /* Breach overlay */
+        .breach-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,0,0,0.05);
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        /* Main content */
+        .container {
+            display: flex;
+            height: calc(100vh - 80px);
+        }
+        
+        /* Left panel - satellite feeds */
+        .satellite-panel {
+            width: 25%;
+            background-color: #050510;
+            border-right: 1px solid #333;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        
+        .panel-title {
+            color: #ff0000;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+        
+        .satellite-feed {
+            margin-bottom: 15px;
+            border: 1px solid #333;
+            position: relative;
+        }
+        
+        .feed-header {
+            background-color: #111;
+            padding: 5px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .feed-status {
+            color: #ff0000;
+            font-weight: bold;
+            animation: blink 1s infinite;
+        }
+        
+        .feed-content {
+            height: 120px;
+            background-color: #000;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .feed-static {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='150' viewBox='0 0 300 150'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='150' filter='url(%23noise)' opacity='0.3'/%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+        
+        .feed-overlay {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            font-size: 10px;
+            color: rgba(0, 255, 255, 0.7);
+            z-index: 2;
+        }
+        
+        /* Main panel - mission control */
+        .mission-panel {
+            flex-grow: 1;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .mission-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .mission-title {
+            color: #ff0000;
+            font-size: 24px;
+            text-transform: uppercase;
+            animation: glitch 3s infinite;
+        }
+        
+        .mission-status {
+            background-color: #ff0000;
+            color: white;
+            padding: 5px 10px;
+            animation: blink 1s infinite;
+        }
+        
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 10px;
+            flex-grow: 1;
+        }
+        
+        .grid-item {
+            background-color: rgba(0, 20, 40, 0.5);
+            border: 1px solid #333;
+            padding: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .grid-title {
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #fff;
+        }
+        
+        /* Right panel - alerts and commands */
+        .alert-panel {
+            width: 25%;
+            background-color: #050510;
+            border-left: 1px solid #333;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        
+        .alert-item {
+            margin-bottom: 10px;
+            padding: 8px;
+            background-color: rgba(255, 0, 0, 0.1);
+            border-left: 3px solid #ff0000;
+            font-size: 12px;
+        }
+        
+        .alert-timestamp {
+            color: #888;
+            font-size: 10px;
+            margin-bottom: 3px;
+        }
+        
+        .alert-critical {
+            background-color: rgba(255, 0, 0, 0.2);
+            border-left-color: #ff0000;
+        }
+        
+        .alert-warning {
+            background-color: rgba(255, 165, 0, 0.1);
+            border-left-color: orange;
+        }
+        
+        /* Console panel at bottom */
+        .console-panel {
+            background-color: #000;
+            border-top: 1px solid #333;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            height: 150px;
+            overflow-y: auto;
+        }
+        
+        .console-line {
+            margin: 3px 0;
+        }
+        
+        .console-timestamp {
+            color: #888;
+            margin-right: 8px;
+        }
+        
+        .console-command {
+            color: #00ff00;
+        }
+        
+        .console-error {
+            color: #ff0000;
+        }
+        
+        .console-warning {
+            color: orange;
+        }
+        
+        .console-success {
+            color: #00ff00;
+        }
+        
+        .console-prompt {
+            display: flex;
+        }
+        
+        .console-input {
+            background-color: transparent;
+            border: none;
+            color: #00ff00;
+            font-family: monospace;
+            font-size: 12px;
+            flex-grow: 1;
+            outline: none;
+        }
+        
+        /* Countdown timer */
+        .countdown {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            color: #ff0000;
+            letter-spacing: 3px;
+        }
+        
+        /* Map display */
+        .map-display {
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='400' viewBox='0 0 800 400'%3E%3Crect width='800' height='400' fill='%23001020'/%3E%3Cpath d='M 100,200 L 200,150 L 300,230 L 400,180 L 500,220 L 600,160 L 700,250' stroke='%2300ffff' fill='none' stroke-width='1' stroke-dasharray='5,5'/%3E%3Ccircle cx='300' cy='230' r='5' fill='%23ff0000'/%3E%3Ccircle cx='500' cy='220' r='5' fill='%23ff0000'/%3E%3C/svg%3E");
+            background-size: cover;
+            position: relative;
+        }
+        
+        .map-target {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #ff0000;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        /* Launch system */
+        .launch-system {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+        
+        .launch-button {
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            margin-top: 10px;
+            cursor: pointer;
+            animation: pulse-button 2s infinite;
+        }
+        
+        @keyframes pulse-button {
+            0% { background-color: #ff0000; }
+            50% { background-color: #990000; }
+            100% { background-color: #ff0000; }
+        }
+        
+        /* Camera feed */
+        .camera-feed {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background-color: #000;
+        }
+        
+        .camera-static {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='150' viewBox='0 0 300 150'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='150' filter='url(%23noise)' opacity='0.3'/%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+        
+        .camera-overlay {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            color: rgba(255, 0, 0, 0.8);
+            font-size: 12px;
+        }
+        
+        /* Personnel data */
+        .personnel-data {
+            height: 100%;
+            overflow-y: auto;
+        }
+        
+        .personnel-item {
+            display: flex;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+        
+        .personnel-name {
+            width: 40%;
+            color: #fff;
+        }
+        
+        .personnel-status {
+            width: 60%;
+            color: #00ffff;
+        }
+        
+        .status-offline {
+            color: #ff0000;
+            animation: blink 1s infinite;
+        }
+        
+        /* Animations */
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0.5; }
+        }
+        
+        @keyframes glitch {
+            0% { text-shadow: none; }
+            20% { text-shadow: -2px 0 #ff0000; }
+            40% { text-shadow: 2px 0 #0000ff; }
+            60% { text-shadow: none; }
+            80% { text-shadow: 2px -2px #ff0000; }
+            100% { text-shadow: none; }
+        }
+        
+        /* Popup alerts */
+        .alert-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #000;
+            border: 2px solid #ff0000;
+            padding: 20px;
+            color: white;
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            text-align: center;
+            min-width: 300px;
+            display: none;
+        }
+        
+        .alert-popup h2 {
+            color: #ff0000;
+            margin-top: 0;
+        }
+        
+        .alert-popup button {
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+        
+        /* Webcam */
+        .webcam-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 200px;
+            height: 150px;
+            border: 2px solid #ff0000;
+            z-index: 500;
+            background-color: #000;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .webcam-label {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            color: #ff0000;
+            font-size: 10px;
+            z-index: 2;
+        }
+        
+        .webcam-rec {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: #ff0000;
+            font-size: 10px;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+        }
+        
+        .webcam-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #ff0000;
+            border-radius: 50%;
+            margin-right: 5px;
+            animation: blink 1s infinite;
+        }
+        
+        .webcam-scan {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: rgba(255, 0, 0, 0.5);
+            animation: webcam-scan 3s infinite linear;
+            z-index: 1;
+        }
+        
+        @keyframes webcam-scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+        
+        /* Location tracker */
+        .location-tracker {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 1px solid #ff0000;
+            padding: 10px;
+            font-size: 12px;
+            color: #00ffff;
+            z-index: 100;
+            display: none;
+        }
+        
+        .location-title {
+            color: #ff0000;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .location-coords {
+            margin-bottom: 5px;
+        }
+        
+        .location-address {
+            color: white;
+            font-size: 11px;
+        }
+        
+        /* Biometric scanner */
+        .biometric-scanner {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 1px solid #ff0000;
+            padding: 10px;
+            font-size: 12px;
+            color: #00ffff;
+            z-index: 100;
+            width: 200px;
+            display: none;
+        }
+        
+        .biometric-title {
+            color: #ff0000;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .biometric-data {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .biometric-label {
+            color: white;
+        }
+        
+        .biometric-value {
+            color: #00ffff;
+        }
+        
+        /* Flickering effect for lights */
+        .flicker {
+            animation: flicker 5s infinite step-end;
+        }
+        
+        @keyframes flicker {
+            0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% { opacity: 1; }
+            20%, 21.999%, 63%, 63.999%, 65%, 69.999% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="breach-overlay"></div>
+    
+    <div class="nasa-header">
+        <svg class="nasa-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 92">
+            <circle cx="50" cy="45" r="40" fill="#0033a0"/>
+            <path d="M52.5,5C76.6,5 96,24.4 96,48.5S76.6,92 52.5,92S9,72.6 9,48.5S28.4,5 52.5,5 M52.5,0C25.5,0 4,21.5 4,48.5S25.5,97 52.5,97S101,75.5 101,48.5S79.5,0 52.5,0z" fill="#ff0000"/>
+            <path d="M 52.5 20 L 56 32 L 69 32 L 58.5 39.5 L 61.5 52.5 L 52 43.5 L 43 53 L 45 40 L 36 32 L 49 32 Z" fill="white"/>
+            <path d="M 26 22 L 75 65" stroke="white" stroke-width="6"/>
+        </svg>
+        <div class="nasa-title">NASA MISSION CONTROL</div>
+    </div>
+    
+    <div class="container">
+        <!-- Left Panel -->
+        <div class="satellite-panel">
+            <div class="panel-title">SATELLITE FEEDS</div>
+            
+            <div class="satellite-feed">
+                <div class="feed-header">
+                    <span>SAT-A347 (ORBIT: LEO)</span>
+                    <span class="feed-status">COMPROMISED</span>
+                </div>
+                <div class="feed-content">
+                    <div class="feed-static"></div>
+                    <div class="feed-overlay">LAT: 37.8136° N, LONG: 144.9631° W</div>
+                </div>
+            </div>
+            
+            <div class="satellite-feed">
+                <div class="feed-header">
+                    <span>SAT-B198 (ORBIT: GEO)</span>
+                    <span class="feed-status">SIGNAL LOST</span>
+                </div>
+                <div class="feed-content">
+                    <div class="feed-static"></div>
+                    <div class="feed-overlay">LAST CONTACT: 14:27:33 UTC</div>
+                </div>
+            </div>
+            
+            <div class="satellite-feed">
+                <div class="feed-header">
+                    <span>SAT-C992 (ORBIT: MEO)</span>
+                    <span class="feed-status">UNKNOWN</span>
+                </div>
+                <div class="feed-content">
+                    <div class="feed-static"></div>
+                    <div class="feed-overlay">UNIDENTIFIED OBJECTS DETECTED</div>
+                </div>
+            </div>
+            
+            <div class="satellite-feed">
+                <div class="feed-header">
+                    <span>SAT-D118 (CLASSIFIED)</span>
+                    <span class="feed-status">OFFLINE</span>
+                </div>
+                <div class="feed-content">
+                    <div class="feed-static"></div>
+                    <div class="feed-overlay">UNAUTHORIZED ACCESS DETECTED</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Panel -->
+        <div class="mission-panel">
+            <div class="mission-header">
+                <div class="mission-title">SECURITY BREACH DETECTED</div>
+                <div class="mission-status">CRITICAL</div>
+            </div>
+            
+            <div class="countdown">SYSTEM LOCKDOWN: 9:59</div>
+            
+            <div class="mission-grid">
+                <div class="grid-item">
+                    <div class="grid-title">WORLD MAP TRACKING</div>
+                    <div class="map-display">
+                        <div class="map-target" style="top: 35%; left: 25%;"></div>
+                        <div class="map-target" style="top: 45%; left: 65%;"></div>
+                        <div class="map-target" style="top: 60%; left: 40%;"></div>
+                    </div>
+                </div>
+                <div class="grid-item">
+                    <div class="grid-title">SECURITY PROTOCOLS</div>
+                    <div class="launch-system">
+                        <div>FIREWALL STATUS: BYPASSED</div>
+                        <div>ENCRYPTION: COMPROMISED</div>
+                        <div>ACCESS LEVEL: ADMINISTRATOR</div>
+                        <button class="launch-button">EMERGENCY OVERRIDE</button>
+                    </div>
+                </div>
+                <div class="grid-item">
+                    <div class="grid-title">FACILITY CAMERA 4</div>
+                    <div class="camera-feed">
+                        <div class="camera-static"></div>
+                        <div class="camera-overlay">MOTION DETECTED</div>
+                    </div>
+                </div>
+                <div class="grid-item">
+                    <div class="grid-title">ACCESS LOGS</div>
+                    <div class="console-panel" style="height: 100%; max-height: none;">
+                        <div class="console-line"><span class="console-timestamp">02:14:37</span> <span class="console-error">Failed login attempt: admin</span></div>
+                        <div class="console-line"><span class="console-timestamp">02:14:52</span> <span class="console-error">Failed login attempt: admin</span></div>
+                        <div class="console-line"><span class="console-timestamp">02:15:07</span> <span class="console-error">Failed login attempt: admin</span></div>
+                        <div class="console-line"><span class="console-timestamp">02:15:23</span> <span class="console-success">Successful login: admin</span></div>
+                        <div class="console-line"><span class="console-timestamp">02:15:45</span> <span class="console-warning">Config file accessed: security.cfg</span></div>
+                        <div class="console-line"><span class="console-timestamp">02:16:12</span> <span class="console-warning">Firewall settings modified</span></div>
+                        <div class="console-line"><span class="console-timestamp">02:17:33</span> <span class="console-error">External connection established</span></div>
+                        <div class="console-line"><span class="console-timestamp">02:18:05</span> <span class="console-error">Database dump initiated</span></div>
+                        <div class="console-line"><span class="console-timestamp">02:20:17</span> <span class="console-error">Critical files accessed</span></div>
+                        <div class="console-line"><span class="console-timestamp">02:21:42</span> <span class="console-error">System lockdown protocol initiated</span></div>
+                    </div>
+                </div>
+                <div class="grid-item">
+                    <div class="grid-title">PERSONNEL STATUS</div>
+                    <div class="personnel-data">
+                        <div class="personnel-item">
+                            <div class="personnel-name">Dr. Johnson, A.</div>
+                            <div class="personnel-status status-offline">OFFLINE</div>
+                        </div>
+                        <div class="personnel-item">
+                            <div class="personnel-name">Dr. Martinez, S.</div>
+                            <div class="personnel-status status-offline">OFFLINE</div>
+                        </div>
+                        <div class="personnel-item">
+                            <div class="personnel-name">Cmdr. Williams, T.</div>
+                            <div class="personnel-status">ACTIVE - LEVEL 2</div>
+                        </div>
+                        <div class="personnel-item">
+                            <div class="personnel-name">Lt. Garcia, R.</div>
+                            <div class="personnel-status status-offline">OFFLINE</div>
+                        </div>
+                        <div class="personnel-item">
+                            <div class="personnel-name">Tech. Sanders, L.</div>
+                            <div class="personnel-status">ACTIVE - LEVEL 1</div>
+                        </div>
+                        <div class="personnel-item">
+                            <div class="personnel-name">Tech. Thompson, K.</div>
+                            <div class="personnel-status status-offline">OFFLINE</div>
+                        </div>
+                        <div class="personnel-item">
+                            <div class="personnel-name">Sec. Ahmed, M.</div>
+                            <div class="personnel-status status-offline">OFFLINE</div>
+                        </div>
+                        <div class="personnel-item">
+                            <div class="personnel-name">Dr. Wilson, C.</div>
+                            <div class="personnel-status">ACTIVE - LEVEL 3</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-item">
+                    <div class="grid-title">SECURITY INTEL</div>
+                    <div style="color: red; text-align: center; margin-top: 20px; font-size: 24px; font-weight: bold;">
+                        TOP SECRET FILES<br>COMPROMISED
+                    </div>
+                    <div style="color: white; text-align: center; margin-top: 10px;">
+                        <div>PROJECT APOLLO BLACK</div>
+                        <div>MARS COLONY INITIATIVE</div>
+                        <div>DEEPSPACE ANOMALY 2172</div>
+                        <div>QUANTUM COMMUNICATIONS ARRAY</div>
+                        <div>AREA 51 INVENTORIES</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Panel -->
+        <div class="alert-panel">
+            <div class="panel-title">SYSTEM ALERTS</div>
+            
+            <div class="alert-item alert-critical">
+                <div class="alert-timestamp">02:14:22 UTC</div>
+                <div>MULTIPLE UNAUTHORIZED LOGIN ATTEMPTS DETECTED</div>
+            </div>
+            
+            <div class="alert-item alert-critical">
+                <div class="alert-timestamp">02:15:47 UTC</div>
+                <div>FIREWALL BREACH ON PORT 443</div>
+            </div>
+            
+            <div class="alert-item alert-critical">
+                <div class="alert-timestamp">02:16:23 UTC</div>
+                <div>SECURITY PROTOCOL OVERRIDE</div>
+            </div>
+            
+            <div class="alert-item alert-warning">
+                <div class="alert-timestamp">02:17:05 UTC</div>
+                <div>SATELLITE COMMUNICATIONS INTERRUPTED</div>
+            </div>
+            
+            <div class="alert-item alert-critical">
+                <div class="alert-timestamp">02:18:37 UTC</div>
+                <div>DATA EXFILTRATION IN PROGRESS</div>
+            </div>
+            
+            <div class="alert-item alert-critical">
+                <div class="alert-timestamp">02:19:42 UTC</div>
+                <div>CLASSIFIED DOCUMENT ACCESS: PROJECT APOLLO BLACK</div>
+            </div>
+            
+            <div class="alert-item alert-warning">
+                <div class="alert-timestamp">02:20:15 UTC</div>
+                <div>MULTIPLE SYSTEM SERVICES SHUTTING DOWN</div>
+            </div>
+            
+            <div class="alert-item alert-critical">
+                <div class="alert-timestamp">02:21:08 UTC</div>
+                <div>BIOMETRIC SECURITY BYPASSED</div>
+            </div>
+            
+            <div class="alert-item alert-critical">
+                <div class="alert-timestamp">02:21:33 UTC</div>
+                <div>EMERGENCY LOCKDOWN INITIATED</div>
+            </div>
+            
+            <div class="alert-item alert-warning">
+                <div class="alert-timestamp">02:22:01 UTC</div>
+                <div>CONNECTION ATTEMPTS FROM UNKNOWN IP RANGES</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Console Panel -->
+    <div class="console-panel">
+        <div class="console-line"><span class="console-timestamp">02:21:33</span> <span class="console-command">./emergency_lockdown.sh --force</span></div>
+        <div class="console-line"><span class="console-timestamp">02:21:34</span> <span class="console-warning">Warning: This will terminate all connections and require level 4 authentication to restore.</span></div>
+        <div class="console-line"><span class="console-timestamp">02:21:35</span> <span class="console-warning">Proceeding with emergency lockdown...</span></div>
+        <div class="console-line"><span class="console-timestamp">02:21:36</span> <span class="console-warning">Shutting down external communications...</span></div>
+        <div class="console-line"><span class="console-timestamp">02:21:37</span> <span class="console-warning">Securing classified databases...</span></div>
+        <div class="console-line"><span class="console-timestamp">02:21:38</span> <span class="console-error">ERROR: Unable to secure database "apollo_black_files" - already compromised</span></div>
+        <div class="console-line"><span class="console-timestamp">02:21:39</span> <span class="console-warning">
